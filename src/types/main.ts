@@ -1,4 +1,8 @@
-interface Location {
+export interface MapData {
+  data_map: Location[];
+}
+
+export interface Location {
   kioskId: null | string;
   popstationName: null | string;
   distance: string;
