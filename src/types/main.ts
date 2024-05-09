@@ -19,8 +19,8 @@ interface Location {
   longitude: string;
   operatingHours: string;
   phoneNumber: string;
-  availableDelivery: string;
-  availableDropoff: string;
+  // availableDelivery: string;
+  // availableDropoff: string;
   notes: string;
   account: string;
   locationDescription: null | string;
