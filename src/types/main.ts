@@ -1,0 +1,35 @@
+interface Location {
+  kioskId: null | string;
+  popstationName: null | string;
+  distance: string;
+  // extensionFieldsList: any[];
+  outletId: string;
+  outletName: string;
+  outletType: string;
+  ediCode: string;
+  buildingName: string;
+  houseBlockNumber: string;
+  storey: null | string;
+  unitNumber: string;
+  streetName: string;
+  town_suburb: string;
+  city: string;
+  postCode: string;
+  latitude: string;
+  longitude: string;
+  operatingHours: string;
+  phoneNumber: string;
+  availableDelivery: string;
+  availableDropoff: string;
+  notes: string;
+  account: string;
+  locationDescription: null | string;
+  sortCode: string;
+  email: string;
+  dimension: string;
+  service: null | string;
+  location: null | string;
+  state: string;
+  // country: string;
+  region: string;
+}
