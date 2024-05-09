@@ -2,7 +2,12 @@ import { getData, getAllData } from "./data";
 
 export async function generateStaticParams() {
   const data = await getAllData();
-  return data.map(({ outletId }) => ({ outletId }));
+  return (
+    data
+      // There are scenarios where outletId is empty
+      .filter(({ outletId }) => outletId)
+      .map(({ outletId }) => ({ outletId }))
+  );
 }
 
 export default async function Page({
