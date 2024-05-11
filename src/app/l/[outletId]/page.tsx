@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from "next/script";
 import { jsonLdScriptProps } from "react-schemaorg";
 import { CivicStructure } from "schema-dts";
 import { getAllData, getData } from "./data";
@@ -20,41 +21,27 @@ export default async function Page({
 }) {
   const data = await getData(outletId);
   if (!data) return null;
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "CivicStructure",
-    name: "Springfield Town Hall",
-    openingHours: ["Mo-Fr 09:00-17:30", "Sa 09:00-12:00"],
-  };
   return (
     <>
-      <Head>
-        <script
-          {...jsonLdScriptProps<CivicStructure>({
-            "@context": "https://schema.org",
-            "@type": "CivicStructure",
-            name: data.outletName,
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: `${data.unitNumber} ${data.buildingName} ${data.streetName}`,
-              addressLocality: data.town_suburb,
-              postalCode: data.postCode ?? undefined,
-              addressCountry: "SG",
-            },
-            keywords: data.outletType,
-            latitude: data.latitude,
-            longitude: data.longitude,
-            openingHours: data.operatingHours ?? undefined,
-          })}
-        />
-      </Head>
+      <Script
+        {...jsonLdScriptProps<CivicStructure>({
+          "@context": "https://schema.org",
+          "@type": "CivicStructure",
+          name: data.outletName,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: `${data.unitNumber} ${data.buildingName} ${data.streetName}`,
+            addressLocality: data.town_suburb,
+            postalCode: data.postCode ?? undefined,
+            addressCountry: "SG",
+          },
+          keywords: data.outletType,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          openingHoursSpecification: data.operatingHoursSchema ?? undefined,
+        })}
+      />
       <main>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        ></script>
         <h1>{data?.outletName}</h1>
         <address>
           {data?.unitNumber} {data?.buildingName} {data?.streetName}
