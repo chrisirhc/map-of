@@ -30,7 +30,7 @@ export default async function Page({
           name: data.outletName,
           address: {
             "@type": "PostalAddress",
-            streetAddress: `${data.unitNumber} ${data.buildingName} ${data.streetName}`,
+            streetAddress: `${data.unitNumber ?? ""} ${data.houseBlockNumber ?? ""} ${data.streetName ?? ""} ${data.buildingName ?? ""}`,
             addressLocality: data.town_suburb,
             postalCode: data.postCode ?? undefined,
             addressCountry: "SG",
