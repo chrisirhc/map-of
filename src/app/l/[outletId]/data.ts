@@ -12,9 +12,9 @@ async function getLocalData() {
 
 export async function getAllData() {
   if (data) return data;
-  const fetchedData = !process.env.DATA_LOCATION
+  const fetchedData = !process.env.NEXT_PUBLIC_DATA_LOCATION
     ? await getLocalData()
-    : await fetch(process.env.DATA_LOCATION).then(
+    : await fetch(process.env.NEXT_PUBLIC_DATA_LOCATION).then(
         async (res) => (await res.json()) as MapData
       );
   data = processData(fetchedData);
