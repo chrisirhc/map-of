@@ -3,6 +3,7 @@ import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
 
 const DATA_LOCATION = process.env.DATA_LOCATION;
+let data: ReturnType<typeof processData>;
 
 async function getLocalData() {
   return await import("../../../../map-data-2024-05-09.json").then(
@@ -10,18 +11,25 @@ async function getLocalData() {
   );
 }
 
-export const getAllData = async () =>
-  (!DATA_LOCATION
+export async function getAllData() {
+  if (data) return data;
+  const fetchedData = !DATA_LOCATION
     ? await getLocalData()
     : await fetch(DATA_LOCATION).then(
         async (res) => (await res.json()) as MapData
-      )
-  ).data_map.map((location) => ({
+      );
+  data = processData(fetchedData);
+  return data;
+}
+
+function processData(data: MapData) {
+  return data.data_map.map((location) => ({
     ...location,
     operatingHoursSchema: location.operatingHours
       ? convertOperatingHours(location.operatingHours)
       : null,
   }));
+}
 
 export const getData = async (outletId: string) =>
   (await getAllData()).find((location) => location.outletId === outletId);
