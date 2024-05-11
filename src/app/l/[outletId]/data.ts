@@ -1,11 +1,21 @@
+import { MapData } from "@/types/main";
 import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
 
+const DATA_LOCATION = process.env.DATA_LOCATION;
+
+async function getLocalData() {
+  return await import("../../../../map-data-2024-05-09.json").then(
+    (module) => module.default
+  );
+}
+
 export const getAllData = async () =>
-  (
-    await import("../../../../get-map-data.json").then(
-      (module) => module.default
-    )
+  (!DATA_LOCATION
+    ? await getLocalData()
+    : await fetch(DATA_LOCATION).then(
+        async (res) => (await res.json()) as MapData
+      )
   ).data_map.map((location) => ({
     ...location,
     operatingHoursSchema: location.operatingHours
