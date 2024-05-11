@@ -5,19 +5,18 @@ import "server-only";
 let data: ReturnType<typeof processData>;
 
 async function getLocalData() {
-  console.log("Getting local data");
-  return await import("../../../../map-data-2024-05-09.json").then(
-    (module) => module.default
-  );
+  throw new Error();
+  // return await import("../../../../map-data-2024-05-09.json").then(
+  //   (module) => module.default
+  // );
 }
 
 export async function getAllData() {
   if (data) return data;
   const fetchedData = await (() => {
     if (!process.env.DATA_LOCATION) {
-      return getLocalData();
+      throw new Error("DATA_LOCATION not set");
     }
-    console.log("Fetching data from", process.env.DATA_LOCATION);
     return fetch(process.env.DATA_LOCATION).then(
       async (res) => (await res.json()) as MapData
     );
