@@ -2,7 +2,6 @@ import { MapData } from "@/types/main";
 import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
 
-const DATA_LOCATION = process.env.DATA_LOCATION;
 let data: ReturnType<typeof processData>;
 
 async function getLocalData() {
@@ -13,9 +12,9 @@ async function getLocalData() {
 
 export async function getAllData() {
   if (data) return data;
-  const fetchedData = !DATA_LOCATION
+  const fetchedData = !process.env.DATA_LOCATION
     ? await getLocalData()
-    : await fetch(DATA_LOCATION).then(
+    : await fetch(process.env.DATA_LOCATION).then(
         async (res) => (await res.json()) as MapData
       );
   data = processData(fetchedData);
