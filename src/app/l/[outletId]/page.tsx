@@ -1,5 +1,5 @@
 import { jsonLdScriptProps } from "react-schemaorg";
-import { CivicStructure } from "schema-dts";
+import { LocalBusiness } from "schema-dts";
 import { getAllData, getData } from "./data";
 
 export async function generateStaticParams() {
@@ -22,9 +22,9 @@ export default async function Page({
   return (
     <>
       <script
-        {...jsonLdScriptProps<CivicStructure>({
+        {...jsonLdScriptProps<LocalBusiness>({
           "@context": "https://schema.org",
-          "@type": "CivicStructure",
+          "@type": "LocalBusiness",
           name: data.outletName,
           address: {
             "@type": "PostalAddress",
