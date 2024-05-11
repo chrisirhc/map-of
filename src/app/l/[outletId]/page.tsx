@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { jsonLdScriptProps } from "react-schemaorg";
 import { CivicStructure } from "schema-dts";
 import { getAllData, getData } from "./data";
@@ -22,7 +21,7 @@ export default async function Page({
   if (!data) return null;
   return (
     <>
-      <Script
+      <script
         {...jsonLdScriptProps<CivicStructure>({
           "@context": "https://schema.org",
           "@type": "CivicStructure",
