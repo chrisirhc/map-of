@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Script from "next/script";
 import { jsonLdScriptProps } from "react-schemaorg";
 import { CivicStructure } from "schema-dts";
