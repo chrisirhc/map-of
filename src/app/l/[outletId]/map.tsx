@@ -5,10 +5,24 @@ import "client-only";
 import "leaflet/dist/leaflet.css";
 // Hack to get Marker icons to load, see https://github.com/PaulLeCam/react-leaflet/issues/1081#issuecomment-1934655181
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
-import "leaflet-defaulticon-compatibility";
+// Imported in the render function to avoid SSR error that looks like `ReferenceError: window is not defined`
+// import "leaflet-defaulticon-compatibility";
 
 import { use } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import dynamic from "next/dynamic";
+
+// Prevent Map from being rendered via SSR
+// Avoid SSR error that looks like `ReferenceError: window is not defined`
+const Marker = dynamic(() =>
+  import("react-leaflet").then(({ Marker }) => Marker)
+);
+const Popup = dynamic(() => import("react-leaflet").then(({ Popup }) => Popup));
+const TileLayer = dynamic(() =>
+  import("react-leaflet").then(({ TileLayer }) => TileLayer)
+);
+const MapContainer = dynamic(() =>
+  import("react-leaflet").then(({ MapContainer }) => MapContainer)
+);
 import type { MapMarkers } from "./data";
 
 export function Map({
@@ -18,6 +32,8 @@ export function Map({
   center: [number, number];
   mapMarkers: MapMarkers;
 }) {
+  // @ts-expect-error Ignore this error
+  import("leaflet-defaulticon-compatibility");
   const mapMarkersData = use(mapMarkers);
   return (
     <div>
