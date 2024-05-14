@@ -8,8 +8,8 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 
 import { use } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { MapMarkers } from "./data";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import type { MapMarkers } from "./data";
 
 export function Map({
   center,
