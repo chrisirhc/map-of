@@ -1,4 +1,5 @@
 "use client";
+import "client-only";
 
 // Leaflet dependencies
 import "leaflet/dist/leaflet.css";
