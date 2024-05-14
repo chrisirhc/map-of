@@ -1,7 +1,9 @@
 import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
-import { getAllData, getData, getMapData } from "./data";
+import { getAllData, getData, getMapData as getMapMarkers } from "./data";
 import dynamic from "next/dynamic";
+
+// Prevent Map from being rendered via SSR
 const Map = dynamic(() => import("./map").then(({ Map }) => Map), {
   ssr: false,
 });
@@ -24,7 +26,7 @@ export default async function Page({
   const data = await getData(outletId);
   if (!data) return null;
   const center = [data.latitude, data.longitude] as const;
-  const mapData = getMapData();
+  const mapMarkers = getMapMarkers();
   return (
     <>
       <script
@@ -55,7 +57,7 @@ export default async function Page({
         Opening Hours: {data.operatingHours}
         {/* {JSON.stringify(data)} */}
         <section>
-          <Map center={center} />
+          <Map center={center} mapMarkers={mapMarkers} />
         </section>
       </main>
     </>

@@ -3,7 +3,7 @@ import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
 
 export type AllData = ReturnType<typeof processData>;
-export type MapMarkerData = ReturnType<typeof getMapData>;
+export type MapMarkers = ReturnType<typeof getMapData>;
 let data: AllData;
 
 async function getLocalData() {

@@ -1,9 +1,20 @@
 "use client";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+// Hack to get Marker icons to load, see https://github.com/PaulLeCam/react-leaflet/issues/1081#issuecomment-1934655181
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
+import "leaflet-defaulticon-compatibility";
+import { use } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapMarkers } from "./data";
 
-export function Map({ center }: { center: readonly [number, number] }) {
+export function Map({
+  center,
+  mapMarkers,
+}: {
+  center: readonly [number, number];
+  mapMarkers: MapMarkers;
+}) {
+  const mapMarkersData = use(mapMarkers);
   return (
     <div>
       <MapContainer
@@ -16,11 +27,14 @@ export function Map({ center }: { center: readonly [number, number] }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        {mapMarkersData.map((marker) => (
+          <Marker
+            key={marker.outletId}
+            position={[marker.latitude, marker.longitude]}
+          >
+            <Popup>{marker.outletName}</Popup>
+          </Marker>
+        ))}
       </MapContainer>
     </div>
   );
