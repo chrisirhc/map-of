@@ -1,8 +1,11 @@
 "use client";
+
+// Leaflet dependencies
 import "leaflet/dist/leaflet.css";
 // Hack to get Marker icons to load, see https://github.com/PaulLeCam/react-leaflet/issues/1081#issuecomment-1934655181
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import "leaflet-defaulticon-compatibility";
+
 import { use } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { MapMarkers } from "./data";
