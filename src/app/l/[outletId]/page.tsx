@@ -1,6 +1,10 @@
 import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
-import { getAllData, getData } from "./data";
+import { getAllData, getData, getMapData } from "./data";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("./map").then(({ Map }) => Map), {
+  ssr: false,
+});
 
 export async function generateStaticParams() {
   const data = await getAllData();
@@ -19,6 +23,8 @@ export default async function Page({
 }) {
   const data = await getData(outletId);
   if (!data) return null;
+  const center = [data.latitude, data.longitude] as const;
+  const mapData = getMapData();
   return (
     <>
       <script
@@ -48,6 +54,9 @@ export default async function Page({
         </address>
         Opening Hours: {data.operatingHours}
         {/* {JSON.stringify(data)} */}
+        <section>
+          <Map center={center} />
+        </section>
       </main>
     </>
   );

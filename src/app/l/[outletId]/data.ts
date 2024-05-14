@@ -2,7 +2,9 @@ import { MapData } from "@/types/main";
 import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
 
-let data: ReturnType<typeof processData>;
+export type AllData = ReturnType<typeof processData>;
+export type MapMarkerData = ReturnType<typeof getMapData>;
+let data: AllData;
 
 async function getLocalData() {
   throw new Error();
@@ -11,7 +13,7 @@ async function getLocalData() {
   // );
 }
 
-export async function getAllData() {
+export async function getAllData(): Promise<AllData> {
   if (data) return data;
   const fetchedData = await (() => {
     if (!process.env.DATA_LOCATION) {
@@ -25,9 +27,21 @@ export async function getAllData() {
   return data;
 }
 
+export async function getMapData() {
+  const allData = await getAllData();
+  return allData.map(({ latitude, longitude, outletName, outletId }) => ({
+    latitude,
+    longitude,
+    outletName,
+    outletId,
+  }));
+}
+
 function processData(data: MapData) {
   return data.data_map.map((location) => ({
     ...location,
+    latitude: parseFloat(location.latitude),
+    longitude: parseFloat(location.longitude),
     operatingHoursSchema: location.operatingHours
       ? convertOperatingHours(location.operatingHours)
       : null,
