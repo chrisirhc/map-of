@@ -11,7 +11,7 @@ export function Map({
   center,
   mapMarkers,
 }: {
-  center: readonly [number, number];
+  center: [number, number];
   mapMarkers: MapMarkers;
 }) {
   const mapMarkersData = use(mapMarkers);
@@ -19,6 +19,7 @@ export function Map({
     <div>
       <MapContainer
         style={{ height: "500px", width: "500px" }}
+        // Hack since it doesn't support readonly tuples
         center={center}
         zoom={13}
         scrollWheelZoom={false}

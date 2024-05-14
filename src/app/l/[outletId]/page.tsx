@@ -25,7 +25,7 @@ export default async function Page({
 }) {
   const data = await getData(outletId);
   if (!data) return null;
-  const center = [data.latitude, data.longitude] as const;
+  const center: [number, number] = [data.latitude, data.longitude];
   const mapMarkers = getMapMarkers();
   return (
     <>
