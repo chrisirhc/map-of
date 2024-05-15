@@ -1,12 +1,7 @@
 import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
 import { getAllData, getData, getMapData as getMapMarkers } from "./data";
-import dynamic from "next/dynamic";
-
-// Prevent Map from being rendered via SSR
-const Map = dynamic(() => import("./map").then(({ Map }) => Map), {
-  ssr: false,
-});
+import { ClientOnlyMap } from "@/components/client-only-map";
 
 export async function generateStaticParams() {
   const data = await getAllData();
@@ -55,9 +50,8 @@ export default async function Page({
           {data?.town_suburb} {data?.city} Singapore {data?.postCode}
         </address>
         Opening Hours: {data.operatingHours}
-        {/* {JSON.stringify(data)} */}
         <section>
-          <Map center={center} mapMarkers={mapMarkers} />
+          <ClientOnlyMap center={center} mapMarkers={mapMarkers} />
         </section>
       </main>
     </>
