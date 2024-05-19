@@ -2,6 +2,13 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
 import { getAllData, getData, getMapData as getMapMarkers } from "./data";
 import { ClientOnlyMap } from "@/components/client-only-map";
+import type { Metadata } from "next";
+
+type Props = {
+  params: {
+    outletId: string;
+  };
+};
 
 export async function generateStaticParams() {
   const data = await getAllData();
@@ -13,11 +20,17 @@ export async function generateStaticParams() {
   );
 }
 
-export default async function Page({
+export async function generateMetadata({
   params: { outletId },
-}: {
-  params: { outletId: string };
-}) {
+}: Props): Promise<Metadata> {
+  const data = await getData(outletId);
+  return {
+    title: data?.outletName,
+    description: data?.outletType,
+  };
+}
+
+export default async function Page({ params: { outletId } }: Props) {
   const data = await getData(outletId);
   if (!data) return null;
   const center: [number, number] = [data.latitude, data.longitude];
