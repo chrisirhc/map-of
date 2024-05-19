@@ -77,7 +77,10 @@ export function Map({
   );
 }
 
-const PlaceIcon = L.divIcon({ className: styles.placeicon });
+const PlaceIcon = L.divIcon({
+  className: styles.placeicon,
+  iconSize: [30, 30],
+});
 
 function ShowGooglePlace({ place }: { place?: Place | null }) {
   const map = useMap();
