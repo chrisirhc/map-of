@@ -1,7 +1,7 @@
 "use client";
 import "client-only";
 
-import { use } from "react";
+import { use, useState } from "react";
 
 // Leaflet dependencies
 import "leaflet/dist/leaflet.css";
@@ -10,6 +10,10 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 // Imported in the render function to avoid SSR error that looks like `ReferenceError: window is not defined`
 import "leaflet-defaulticon-compatibility";
 import { Marker, Popup, TileLayer, MapContainer } from "react-leaflet";
+import {
+  APILoader,
+  PlacePicker,
+} from "@googlemaps/extended-component-library/react";
 
 import type { MapMarkers } from "../app/l/[outletId]/data";
 
@@ -20,9 +24,28 @@ export function Map({
   center: [number, number];
   mapMarkers: MapMarkers;
 }) {
+  const [formattedAddress, setFormattedAddress] = useState("");
+  const handlePlaceChange: React.ComponentProps<
+    typeof PlacePicker
+  >["onPlaceChange"] = (e) => {
+    const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
+    setFormattedAddress(place?.formattedAddress ?? "");
+  };
+  const countries = ["sg"];
   const mapMarkersData = use(mapMarkers);
   return (
     <div>
+      <>
+        <APILoader
+          apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+          solutionChannel="GMP_GCC_placepicker_v1"
+        />
+        <PlacePicker
+          country={countries}
+          placeholder="Enter a place to see its address"
+          onPlaceChange={handlePlaceChange}
+        />
+      </>
       <MapContainer
         style={{ height: "500px", width: "500px" }}
         // Hack since it doesn't support readonly tuples
