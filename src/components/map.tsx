@@ -9,13 +9,17 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 // Imported in the render function to avoid SSR error that looks like `ReferenceError: window is not defined`
 import "leaflet-defaulticon-compatibility";
-import { Marker, Popup, TileLayer, MapContainer } from "react-leaflet";
+import { Marker, Popup, TileLayer, MapContainer, useMap } from "react-leaflet";
 import {
   APILoader,
   PlacePicker,
 } from "@googlemaps/extended-component-library/react";
 
 import type { MapMarkers } from "../app/l/[outletId]/data";
+import L from "leaflet";
+import styles from "./map.module.css";
+
+type Place = google.maps.places.Place;
 
 export function Map({
   center,
@@ -24,13 +28,13 @@ export function Map({
   center: [number, number];
   mapMarkers: MapMarkers;
 }) {
-  const [formattedAddress, setFormattedAddress] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>();
   const handlePlaceChange: React.ComponentProps<
     typeof PlacePicker
   >["onPlaceChange"] = (e) => {
     // EventTarget type isn't correct so need to do this cast.
     const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
-    setFormattedAddress(place?.formattedAddress ?? "");
+    setSelectedPlace(place);
   };
   const countries = ["sg"];
   const mapMarkersData = use(mapMarkers);
@@ -49,8 +53,9 @@ export function Map({
       </>
       <MapContainer
         style={{ height: "500px", width: "500px" }}
-        // Hack since it doesn't support readonly tuples
-        center={center}
+        center={
+          selectedPlace?.location ? selectedPlace.location.toJSON() : center
+        }
         zoom={13}
         scrollWheelZoom={false}
       >
@@ -66,7 +71,27 @@ export function Map({
             <Popup>{marker.outletName}</Popup>
           </Marker>
         ))}
+        <ShowGooglePlace place={selectedPlace} />
       </MapContainer>
     </div>
+  );
+}
+
+const PlaceIcon = L.divIcon({ className: styles.placeicon });
+
+function ShowGooglePlace({ place }: { place?: Place | null }) {
+  const map = useMap();
+  if (!place?.location) {
+    return null;
+  }
+  map.setView(place.location.toJSON(), 13);
+  return (
+    <Marker
+      position={place.location.toJSON()}
+      icon={PlaceIcon}
+      zIndexOffset={1000}
+    >
+      <Popup>{place?.displayName}</Popup>
+    </Marker>
   );
 }
