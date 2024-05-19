@@ -28,6 +28,7 @@ export function Map({
   const handlePlaceChange: React.ComponentProps<
     typeof PlacePicker
   >["onPlaceChange"] = (e) => {
+    // EventTarget type isn't correct so need to do this cast.
     const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
     setFormattedAddress(place?.formattedAddress ?? "");
   };
