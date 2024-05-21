@@ -22,17 +22,16 @@ export default function RootLayout({
         <Theme>
           {children}
           <footer>
-            <Text>
+            <Text size="1">
               Data is sourced from{" "}
               <Link href="https://www.singpost.com/locate-us">
                 Singapore Post
               </Link>
-            </Text>
-            <div>
+              <br />
               <Link href="https://github.com/chrisirhc/map-of">
                 Source is at Github
               </Link>
-            </div>
+            </Text>
           </footer>
         </Theme>
       </body>
