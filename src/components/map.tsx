@@ -14,6 +14,7 @@ import {
   APILoader,
   PlacePicker,
 } from "@googlemaps/extended-component-library/react";
+import Link from "next/link";
 
 import type { MapMarkers } from "../app/data";
 import L from "leaflet";
@@ -69,7 +70,9 @@ export function Map({
             key={marker.outletId}
             position={[marker.latitude, marker.longitude]}
           >
-            <Popup>{marker.outletName}</Popup>
+            <Popup>
+              <Link href={`/l/${marker.outletId}`}>{marker.outletName}</Link>
+            </Popup>
           </Marker>
         ))}
         <ShowGooglePlace place={selectedPlace} />
