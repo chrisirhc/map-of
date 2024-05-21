@@ -56,7 +56,7 @@ export function Map({
         center={
           selectedPlace?.location ? selectedPlace.location.toJSON() : center
         }
-        zoom={13}
+        zoom={16}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -86,7 +86,7 @@ function ShowGooglePlace({ place }: { place?: Place | null }) {
   if (!place?.location) {
     return null;
   }
-  map.setView(place.location.toJSON(), 13);
+  map.setView(place.location.toJSON(), map.getZoom(), { animate: true });
   return (
     <Marker
       position={place.location.toJSON()}
