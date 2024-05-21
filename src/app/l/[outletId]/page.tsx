@@ -1,6 +1,6 @@
 import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
-import { getAllData, getData, getMapData as getMapMarkers } from "./data";
+import { getAllData, getData, getMapData as getMapMarkers } from "../../data";
 import { ClientOnlyMap } from "@/components/client-only-map";
 import type { Metadata } from "next";
 

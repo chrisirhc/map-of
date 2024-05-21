@@ -15,7 +15,7 @@ import {
   PlacePicker,
 } from "@googlemaps/extended-component-library/react";
 
-import type { MapMarkers } from "../app/l/[outletId]/data";
+import type { MapMarkers } from "../app/data";
 import L from "leaflet";
 import styles from "./map.module.css";
 
