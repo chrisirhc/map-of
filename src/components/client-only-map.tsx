@@ -13,7 +13,7 @@ export const ClientOnlyMap = ({
   center,
   mapMarkers,
 }: {
-  center: [number, number];
+  center?: [number, number];
   mapMarkers: MapMarkers;
 }) => {
   return <Map center={center} mapMarkers={mapMarkers} />;

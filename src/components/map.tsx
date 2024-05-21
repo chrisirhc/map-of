@@ -25,7 +25,7 @@ export function Map({
   center,
   mapMarkers,
 }: {
-  center: [number, number];
+  center?: [number, number];
   mapMarkers: MapMarkers;
 }) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>();
@@ -36,6 +36,8 @@ export function Map({
     const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
     setSelectedPlace(place);
   };
+  const zoomLevel = !center ? 12 : 16;
+  center ??= [1.34, 103.833333];
   const countries = ["sg"];
   const mapMarkersData = use(mapMarkers);
   return (
@@ -56,7 +58,7 @@ export function Map({
         center={
           selectedPlace?.location ? selectedPlace.location.toJSON() : center
         }
-        zoom={16}
+        zoom={zoomLevel}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
