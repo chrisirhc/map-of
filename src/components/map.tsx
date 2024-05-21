@@ -55,7 +55,7 @@ export function Map({
         />
       </>
       <MapContainer
-        style={{ height: "500px", width: "500px" }}
+        style={{ height: "500px", width: "100%" }}
         center={
           selectedPlace?.location ? selectedPlace.location.toJSON() : center
         }

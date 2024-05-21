@@ -8,7 +8,7 @@ import { Skeleton } from "@radix-ui/themes";
 // Prevent Map from being rendered via SSR
 const Map = dynamic(() => import("./map").then((mod) => mod.Map), {
   ssr: false,
-  loading: () => <Skeleton width="500px" height="500px" loading />,
+  loading: () => <Skeleton width="100%" height="500px" loading />,
 });
 
 export const ClientOnlyMap = ({
