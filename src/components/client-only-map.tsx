@@ -3,10 +3,12 @@
 "use client";
 import { MapMarkers } from "@/app/data";
 import dynamic from "next/dynamic";
+import { Skeleton } from "@radix-ui/themes";
 
 // Prevent Map from being rendered via SSR
 const Map = dynamic(() => import("./map").then((mod) => mod.Map), {
   ssr: false,
+  loading: () => <Skeleton width="500px" height="500px" loading />,
 });
 
 export const ClientOnlyMap = ({
