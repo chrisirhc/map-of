@@ -25,7 +25,7 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const data = await getData(outletId);
   return {
-    title: data?.outletName,
+    title: `Post box at ${data?.outletName}`,
     description: data?.outletType,
   };
 }
