@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Theme, Text, Link } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,18 +19,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <footer>
-          <div>
-            Data is sourced from{" "}
-            <a href="https://www.singpost.com/locate-us">Singapore Post</a>
-          </div>
-          <div>
-            <a href="https://github.com/chrisirhc/map-of">
-              Source is at Github
-            </a>
-          </div>
-        </footer>
+        <Theme>
+          {children}
+          <footer>
+            <Text>
+              Data is sourced from{" "}
+              <Link href="https://www.singpost.com/locate-us">
+                Singapore Post
+              </Link>
+            </Text>
+            <div>
+              <Link href="https://github.com/chrisirhc/map-of">
+                Source is at Github
+              </Link>
+            </div>
+          </footer>
+        </Theme>
       </body>
     </html>
   );

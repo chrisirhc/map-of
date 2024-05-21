@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@googlemaps/extended-component-library": "^0.6.11",
+    "@radix-ui/themes": "^3.0.5",
     "client-only": "^0.0.1",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
