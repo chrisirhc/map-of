@@ -8,7 +8,8 @@ let data: AllData;
 
 async function getLocalData() {
   throw new Error();
-  // return await import("../../../../map-data-2024-05-09.json").then(
+  // Used for debugging locally.
+  // return await import("../../map-data-2024-05-09.json").then(
   //   (module) => module.default
   // );
 }
@@ -16,6 +17,8 @@ async function getLocalData() {
 export async function getAllData(): Promise<AllData> {
   if (data) return data;
   const fetchedData = await (() => {
+    // Used for debugging locally.
+    // return getLocalData();
     if (!process.env.DATA_LOCATION) {
       throw new Error("DATA_LOCATION not set");
     }
