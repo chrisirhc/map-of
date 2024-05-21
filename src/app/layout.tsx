@@ -16,7 +16,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <footer>
+          <div>
+            Data is sourced from{" "}
+            <a href="https://www.singpost.com/locate-us">Singapore Post</a>
+          </div>
+          <div>
+            <a href="https://github.com/chrisirhc/map-of">
+              Source is at Github
+            </a>
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }
