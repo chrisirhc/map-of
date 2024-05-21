@@ -2,6 +2,7 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
 import { getAllData, getData, getMapData as getMapMarkers } from "../../data";
 import { ClientOnlyMap } from "@/components/client-only-map";
+import { Heading } from "@radix-ui/themes";
 import type { Metadata } from "next";
 
 type Props = {
@@ -56,7 +57,7 @@ export default async function Page({ params: { outletId } }: Props) {
         })}
       />
       <main>
-        <h1>{data?.outletName}</h1>
+        <Heading>{data?.outletName}</Heading>
         <address>
           {data?.unitNumber} {data?.buildingName} {data?.streetName}
           <br />
