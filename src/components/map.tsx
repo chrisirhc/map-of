@@ -14,6 +14,7 @@ import Link from "next/link";
 import type { MapMarkers } from "../app/data";
 import L from "leaflet";
 import styles from "./map.module.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
