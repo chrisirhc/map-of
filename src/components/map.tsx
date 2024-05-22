@@ -1,10 +1,9 @@
 "use client";
 import "client-only";
 
-import { use, useState } from "react";
+import { use, useState, useMemo } from "react";
 
-import MapGL from "react-map-gl/maplibre";
-import { Marker, Popup, TileLayer, MapContainer, useMap } from "react-leaflet";
+import MapGL, { useMap, Marker } from "react-map-gl/maplibre";
 import {
   APILoader,
   PlacePicker,
@@ -15,6 +14,7 @@ import type { MapMarkers } from "../app/data";
 import L from "leaflet";
 import styles from "./map.module.css";
 import "maplibre-gl/dist/maplibre-gl.css";
+import maplibregl from "maplibre-gl";
 
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
@@ -28,6 +28,9 @@ export function Map({
   mapMarkers: MapMarkers;
 }) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>();
+  const popup = useMemo(() => {
+    return new maplibregl.Popup().setText("Hello world!");
+  }, []);
   const handlePlaceChange: React.ComponentProps<
     typeof PlacePicker
   >["onPlaceChange"] = (e) => {
@@ -61,7 +64,16 @@ export function Map({
         }}
         style={{ width: "100%", height: 400 }}
         mapStyle={MAP_STYLE}
-      />
+      >
+        {mapMarkersData.map((marker) => (
+          <Marker
+            key={marker.outletId}
+            latitude={marker.latitude}
+            longitude={marker.longitude}
+            popup={popup}
+          />
+        ))}
+      </MapGL>
     </div>
   );
 }
@@ -72,7 +84,7 @@ const PlaceIcon = L.divIcon({
 });
 
 function ShowGooglePlace({ place }: { place?: Place | null }) {
-  const map = useMap();
+  const { current: map } = useMap();
   if (!place?.location) {
     return null;
   }
