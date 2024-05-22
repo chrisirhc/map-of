@@ -49,8 +49,9 @@ export function Map({
           solutionChannel="GMP_GCC_placepicker_v1"
         />
         <PlacePicker
+          style={{ width: "100%" }}
           country={countries}
-          placeholder="Enter a place to see its address"
+          placeholder="Search for a location on the map"
           onPlaceChange={handlePlaceChange}
         />
       </>

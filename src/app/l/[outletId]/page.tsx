@@ -2,7 +2,7 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
 import { getAllData, getData, getMapData as getMapMarkers } from "../../data";
 import { ClientOnlyMap } from "@/components/client-only-map";
-import { Heading } from "@radix-ui/themes";
+import { Heading, Separator, Text } from "@radix-ui/themes";
 import type { Metadata } from "next";
 
 type Props = {
@@ -37,7 +37,7 @@ export default async function Page({ params: { outletId } }: Props) {
   const center: [number, number] = [data.latitude, data.longitude];
   const mapMarkers = getMapMarkers();
   return (
-    <>
+    <main>
       <script
         {...jsonLdScriptProps<LocalBusiness>({
           "@context": "https://schema.org",
@@ -56,18 +56,21 @@ export default async function Page({ params: { outletId } }: Props) {
           openingHoursSpecification: data.operatingHoursSchema ?? undefined,
         })}
       />
-      <main>
-        <Heading>{data?.outletName}</Heading>
+      <Heading size="3">{data?.outletName}</Heading>
+      <Text size="2">
         <address>
           {data?.unitNumber} {data?.buildingName} {data?.streetName}
           <br />
           {data?.town_suburb} {data?.city} Singapore {data?.postCode}
         </address>
-        Opening Hours: {data.operatingHours}
-        <section>
-          <ClientOnlyMap center={center} mapMarkers={mapMarkers} />
-        </section>
-      </main>
-    </>
+        Opening Hours:
+        <br />
+        {data.operatingHours}
+      </Text>
+      <Separator size="4" mb="2" />
+      <section>
+        <ClientOnlyMap center={center} mapMarkers={mapMarkers} />
+      </section>
+    </main>
   );
 }

@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import { Container, Theme, Text, Link } from "@radix-ui/themes";
+import {
+  Container,
+  Theme,
+  Text,
+  Link,
+  Separator,
+  Flex,
+} from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./globals.css";
+import NextLink from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,8 +24,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Posting boxes in Singapore",
-  description: "Locations of posting boxes in Singapore",
+  title: "Post boxes in Singapore",
+  description: "Locations of post boxes in Singapore",
 };
 
 export default function RootLayout({
@@ -30,7 +38,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <Theme>
           <Container>
+            <Link weight="bold" color="gray" underline="none" asChild>
+              <NextLink href="/">Map of Post boxes</NextLink>
+            </Link>
+            <Separator mb="2" size="4" />
             {children}
+            <Separator mt="2" size="4" />
             <footer>
               <Text size="1">
                 Data is sourced from{" "}

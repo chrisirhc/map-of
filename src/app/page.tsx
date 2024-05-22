@@ -7,7 +7,6 @@ export default function Home() {
   const mapMarkers = getMapData();
   return (
     <main className={styles.main}>
-      <Heading>Posting boxes in Singapore</Heading>
       <ClientOnlyMap mapMarkers={mapMarkers} />
     </main>
   );
