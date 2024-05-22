@@ -3,7 +3,12 @@ import "client-only";
 
 import { use, useState } from "react";
 
-import MapGL from "react-map-gl/maplibre";
+// Leaflet dependencies
+import "leaflet/dist/leaflet.css";
+// Hack to get Marker icons to load, see https://github.com/PaulLeCam/react-leaflet/issues/1081#issuecomment-1934655181
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
+// Imported in the render function to avoid SSR error that looks like `ReferenceError: window is not defined`
+import "leaflet-defaulticon-compatibility";
 import { Marker, Popup, TileLayer, MapContainer, useMap } from "react-leaflet";
 import {
   APILoader,
@@ -14,8 +19,6 @@ import Link from "next/link";
 import type { MapMarkers } from "../app/data";
 import L from "leaflet";
 import styles from "./map.module.css";
-
-const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
 type Place = google.maps.places.Place;
 
@@ -52,15 +55,29 @@ export function Map({
           onPlaceChange={handlePlaceChange}
         />
       </>
-      <MapGL
-        initialViewState={{
-          longitude: center[1],
-          latitude: center[0],
-          zoom: 14,
-        }}
-        style={{ width: "100%", height: 400 }}
-        mapStyle={MAP_STYLE}
-      />
+      <MapContainer
+        style={{ height: "500px", width: "100%" }}
+        center={
+          selectedPlace?.location ? selectedPlace.location.toJSON() : center
+        }
+        zoom={zoomLevel}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {mapMarkersData.map((marker) => (
+          <Marker
+            key={marker.outletId}
+            position={[marker.latitude, marker.longitude]}
+          >
+            <Popup>
+              <Link href={`/l/${marker.outletId}`}>{marker.outletName}</Link>
+            </Popup>
+          </Marker>
+        ))}
+        <ShowGooglePlace place={selectedPlace} />
+      </MapContainer>
     </div>
   );
 }
