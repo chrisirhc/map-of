@@ -1,6 +1,11 @@
 import { jsonLdScriptProps } from "react-schemaorg";
 import { LocalBusiness } from "schema-dts";
-import { getAllData, getData, getMapData as getMapMarkers } from "../../data";
+import {
+  getAllData,
+  getData,
+  getGeoJSONData,
+  getMapData as getMapMarkers,
+} from "../../data";
 import { ClientOnlyMap } from "@/components/client-only-map";
 import { Heading, Separator, Text } from "@radix-ui/themes";
 import type { Metadata } from "next";
@@ -35,7 +40,7 @@ export default async function Page({ params: { outletId } }: Props) {
   const data = await getData(outletId);
   if (!data) return null;
   const center: [number, number] = [data.latitude, data.longitude];
-  const mapMarkers = getMapMarkers();
+  const geojsonData = getGeoJSONData();
   return (
     <main>
       <script
@@ -69,7 +74,7 @@ export default async function Page({ params: { outletId } }: Props) {
       </Text>
       <Separator size="4" mb="2" />
       <section>
-        <ClientOnlyMap center={center} mapMarkers={mapMarkers} />
+        <ClientOnlyMap center={center} data={geojsonData} />
       </section>
     </main>
   );

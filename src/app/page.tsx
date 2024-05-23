@@ -1,13 +1,12 @@
 import { ClientOnlyMap } from "@/components/client-only-map";
 import styles from "./page.module.css";
-import { getMapData } from "./data";
-import { Heading } from "@radix-ui/themes";
+import { getGeoJSONData } from "./data";
 
 export default function Home() {
-  const mapMarkers = getMapData();
+  const data = getGeoJSONData();
   return (
     <main className={styles.main}>
-      <ClientOnlyMap mapMarkers={mapMarkers} />
+      <ClientOnlyMap data={data} />
     </main>
   );
 }

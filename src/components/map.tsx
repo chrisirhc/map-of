@@ -3,7 +3,7 @@ import "client-only";
 
 import { use, useState, useMemo } from "react";
 
-import MapGL, { useMap, Marker } from "react-map-gl/maplibre";
+import MapGL, { useMap, Marker, Source, Layer } from "react-map-gl/maplibre";
 import {
   APILoader,
   PlacePicker,
@@ -15,6 +15,7 @@ import L from "leaflet";
 import styles from "./map.module.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
+import { FeatureCollection } from "geojson";
 
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
@@ -22,10 +23,10 @@ type Place = google.maps.places.Place;
 
 export function Map({
   center,
-  mapMarkers,
+  data,
 }: {
   center?: [number, number];
-  mapMarkers: MapMarkers;
+  data: Promise<FeatureCollection>;
 }) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>();
   const popup = useMemo(() => {
@@ -41,7 +42,7 @@ export function Map({
   const zoomLevel = !center ? 12 : 16;
   center ??= [1.34, 103.833333];
   const countries = ["sg"];
-  const mapMarkersData = use(mapMarkers);
+  const mapMarkersData = use(data);
   return (
     <div>
       <>
@@ -65,14 +66,16 @@ export function Map({
         style={{ width: "100%", height: 400 }}
         mapStyle={MAP_STYLE}
       >
-        {mapMarkersData.map((marker) => (
-          <Marker
-            key={marker.outletId}
-            latitude={marker.latitude}
-            longitude={marker.longitude}
-            popup={popup}
+        <Source type="geojson" data={data}>
+          <Layer
+            type="symbol"
+            layout={{
+              // "icon-image": "vehicle-icon",
+              "icon-size": 1,
+              // "text-field": ["get", "id"],
+            }}
           />
-        ))}
+        </Source>
       </MapGL>
     </div>
   );

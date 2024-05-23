@@ -1,6 +1,7 @@
 import { MapData } from "@/types/main";
 import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
+import { FeatureCollection } from "geojson";
 
 export type AllData = ReturnType<typeof processData>;
 export type MapMarkers = ReturnType<typeof getMapData>;
@@ -30,6 +31,11 @@ export async function getAllData(): Promise<AllData> {
   return data;
 }
 
+export async function getGeoJSONData() {
+  const allData = await getAllData();
+  return processDataToGeoJSON(allData);
+}
+
 export async function getMapData() {
   const allData = await getAllData();
   return allData.map(({ latitude, longitude, outletName, outletId }) => ({
@@ -49,6 +55,22 @@ function processData(data: MapData) {
       ? convertOperatingHours(location.operatingHours)
       : null,
   }));
+}
+
+function processDataToGeoJSON(allData: AllData): FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: allData.map((location) => ({
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [location.longitude, location.latitude],
+      },
+      properties: {
+        ...location,
+      },
+    })),
+  };
 }
 
 export const getData = async (outletId: string) =>
