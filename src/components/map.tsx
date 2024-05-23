@@ -42,7 +42,7 @@ export function Map({
   const zoomLevel = !center ? 12 : 16;
   center ??= [1.34, 103.833333];
   const countries = ["sg"];
-  const mapMarkersData = use(data);
+  const geojsonData = use(data);
   return (
     <div>
       <>
@@ -66,19 +66,44 @@ export function Map({
         style={{ width: "100%", height: 400 }}
         mapStyle={MAP_STYLE}
       >
-        <Source type="geojson" data={data}>
+        <MapImage name="vehicle-icon" url="/postbox-transparent.png" />
+        <Source type="geojson" data={geojsonData}>
           <Layer
             type="symbol"
             layout={{
-              // "icon-image": "vehicle-icon",
-              "icon-size": 1,
-              // "text-field": ["get", "id"],
+              "icon-image": "vehicle-icon",
+              "icon-size": 0.5,
+              // "text-anchor": "top",
+              // "text-field": ["get", "outletName"],
+              // "text-size": 8,
             }}
           />
         </Source>
       </MapGL>
     </div>
   );
+}
+
+function MapImage({
+  name,
+  url,
+  sdf,
+}: {
+  name: string;
+  url: string;
+  sdf?: boolean;
+}) {
+  const { current: map } = useMap();
+  if (!map) return null;
+
+  if (!map.hasImage(name)) {
+    map.loadImage(url).then(({ data }) => {
+      if (!map.hasImage(name)) {
+        map.addImage(name, data, { sdf });
+      }
+    });
+  }
+  return null;
 }
 
 const PlaceIcon = L.divIcon({
