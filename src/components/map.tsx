@@ -111,6 +111,7 @@ const PlaceIcon = L.divIcon({
   iconSize: [30, 30],
 });
 
+/*
 function ShowGooglePlace({ place }: { place?: Place | null }) {
   const { current: map } = useMap();
   if (!place?.location) {
@@ -127,3 +128,4 @@ function ShowGooglePlace({ place }: { place?: Place | null }) {
     </Marker>
   );
 }
+*/
