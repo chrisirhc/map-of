@@ -18,7 +18,7 @@ import MapGL, {
   useMap,
 } from "react-map-gl/maplibre";
 
-import { Link } from "@radix-ui/themes";
+import { Box, Link } from "@radix-ui/themes";
 import { FeatureCollection } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { DataFeature } from "../app/data";
@@ -134,13 +134,13 @@ function ShowGooglePlace() {
   const countries = ["sg"];
   if (!map) return null;
   return (
-    <div>
+    <Box width={{ xs: "100%", sm: "50%" }} mr="8">
       <APILoader
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
         solutionChannel="GMP_GCC_placepicker_v1"
       />
       <PlacePicker
-        style={{ width: "50%" }}
+        style={{ width: "100%" }}
         country={countries}
         placeholder="Search for a location on the map"
         onPlaceChange={handlePlaceChange}
@@ -151,6 +151,6 @@ function ShowGooglePlace() {
           latitude={selectedPlace.location.lat()}
         ></Marker>
       ) : null}
-    </div>
+    </Box>
   );
 }
