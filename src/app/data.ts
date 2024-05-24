@@ -1,9 +1,11 @@
 import { MapData } from "@/types/main";
 import { OpeningHoursSpecification } from "schema-dts";
 import "server-only";
-import { FeatureCollection } from "geojson";
+import { Feature, FeatureCollection, Point } from "geojson";
 
 export type AllData = ReturnType<typeof processData>;
+export type GeoJSONProperties = AllData[number];
+export type DataFeature = Feature<Point, GeoJSONProperties>;
 export type MapMarkers = ReturnType<typeof getMapData>;
 let data: AllData;
 
@@ -57,7 +59,9 @@ function processData(data: MapData) {
   }));
 }
 
-function processDataToGeoJSON(allData: AllData): FeatureCollection {
+function processDataToGeoJSON(
+  allData: AllData
+): FeatureCollection<Point, GeoJSONProperties> {
   return {
     type: "FeatureCollection",
     features: allData.map((location) => ({
@@ -66,9 +70,7 @@ function processDataToGeoJSON(allData: AllData): FeatureCollection {
         type: "Point",
         coordinates: [location.longitude, location.latitude],
       },
-      properties: {
-        ...location,
-      },
+      properties: location,
     })),
   };
 }

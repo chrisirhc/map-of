@@ -8,19 +8,21 @@ import MapGL, {
   Source,
   Layer,
   SymbolLayer,
+  Popup,
 } from "react-map-gl/maplibre";
 import {
   APILoader,
   PlacePicker,
 } from "@googlemaps/extended-component-library/react";
-import Link from "next/link";
+import NextLink from "next/link";
 
-import type { MapMarkers } from "../app/data";
+import type { DataFeature, GeoJSONProperties, MapMarkers } from "../app/data";
 import L from "leaflet";
 import styles from "./map.module.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
 import { FeatureCollection } from "geojson";
+import { Link } from "@radix-ui/themes";
 
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
@@ -48,6 +50,7 @@ export function Map({
   data: Promise<FeatureCollection>;
 }) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>();
+  const [selectedFeature, setSelectedFeature] = useState<DataFeature | null>();
   const popup = useMemo(() => {
     return new maplibregl.Popup().setText("Hello world!");
   }, []);
@@ -77,6 +80,7 @@ export function Map({
         />
       </>
       <MapGL
+        interactiveLayerIds={["postbox"]}
         initialViewState={{
           longitude: center[1],
           latitude: center[0],
@@ -84,11 +88,33 @@ export function Map({
         }}
         style={{ width: "100%", height: 400 }}
         mapStyle={MAP_STYLE}
+        onClick={(e) => {
+          const feature = e.features?.[0];
+          if (!feature) return;
+          setSelectedFeature(feature as unknown as DataFeature);
+        }}
       >
         <MapImage name={POSTBOX_ICON_ID} url="/postbox-transparent.png" />
         <Source type="geojson" data={geojsonData}>
           <Layer {...postBoxSymbolLayer} />
         </Source>
+        {selectedFeature ? (
+          <Popup
+            longitude={selectedFeature.geometry.coordinates[0]}
+            latitude={selectedFeature.geometry.coordinates[1]}
+            closeButton={true}
+            closeOnClick={false}
+            onClose={() => setSelectedFeature(null)}
+            anchor="bottom"
+            offset={[0, -30] as [number, number]}
+          >
+            <Link asChild>
+              <NextLink href={`/l/${selectedFeature.properties.outletId}`}>
+                {selectedFeature.properties.outletName}
+              </NextLink>
+            </Link>
+          </Popup>
+        ) : null}
       </MapGL>
     </div>
   );
