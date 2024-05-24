@@ -9,6 +9,8 @@ import MapGL, {
   Layer,
   SymbolLayer,
   Popup,
+  Marker,
+  GeolocateControl,
 } from "react-map-gl/maplibre";
 import {
   APILoader,
@@ -51,9 +53,6 @@ export function Map({
 }) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>();
   const [selectedFeature, setSelectedFeature] = useState<DataFeature | null>();
-  const popup = useMemo(() => {
-    return new maplibregl.Popup().setText("Hello world!");
-  }, []);
   const handlePlaceChange: React.ComponentProps<
     typeof PlacePicker
   >["onPlaceChange"] = (e) => {
@@ -94,6 +93,7 @@ export function Map({
           setSelectedFeature(feature as unknown as DataFeature);
         }}
       >
+        <GeolocateControl />
         <MapImage name={POSTBOX_ICON_ID} url="/postbox-transparent.png" />
         <Source type="geojson" data={geojsonData}>
           <Layer {...postBoxSymbolLayer} />
