@@ -1,30 +1,27 @@
 "use client";
 import "client-only";
 
-import { use, useState, useMemo } from "react";
+import { use, useState } from "react";
 
-import MapGL, {
-  useMap,
-  Source,
-  Layer,
-  SymbolLayer,
-  Popup,
-  Marker,
-  GeolocateControl,
-} from "react-map-gl/maplibre";
 import {
   APILoader,
   PlacePicker,
 } from "@googlemaps/extended-component-library/react";
 import NextLink from "next/link";
+import MapGL, {
+  GeolocateControl,
+  Layer,
+  Marker,
+  Popup,
+  Source,
+  SymbolLayer,
+  useMap,
+} from "react-map-gl/maplibre";
 
-import type { DataFeature, GeoJSONProperties, MapMarkers } from "../app/data";
-import L from "leaflet";
-import styles from "./map.module.css";
-import "maplibre-gl/dist/maplibre-gl.css";
-import maplibregl from "maplibre-gl";
-import { FeatureCollection } from "geojson";
 import { Link } from "@radix-ui/themes";
+import { FeatureCollection } from "geojson";
+import "maplibre-gl/dist/maplibre-gl.css";
+import type { DataFeature } from "../app/data";
 
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
@@ -51,7 +48,6 @@ export function Map({
   center?: [number, number];
   data: Promise<FeatureCollection>;
 }) {
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>();
   const [selectedFeature, setSelectedFeature] = useState<DataFeature | null>();
   const handlePlaceChange: React.ComponentProps<
     typeof PlacePicker
@@ -66,18 +62,7 @@ export function Map({
   const geojsonData = use(data);
   return (
     <div>
-      <>
-        <APILoader
-          apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-          solutionChannel="GMP_GCC_placepicker_v1"
-        />
-        <PlacePicker
-          style={{ width: "100%" }}
-          country={countries}
-          placeholder="Search for a location on the map"
-          onPlaceChange={handlePlaceChange}
-        />
-      </>
+      <></>
       <MapGL
         interactiveLayerIds={["postbox"]}
         initialViewState={{
@@ -115,6 +100,7 @@ export function Map({
             </Link>
           </Popup>
         ) : null}
+        <ShowGooglePlace />
       </MapGL>
     </div>
   );
@@ -142,26 +128,38 @@ function MapImage({
   return null;
 }
 
-const PlaceIcon = L.divIcon({
-  className: styles.placeicon,
-  iconSize: [30, 30],
-});
-
-/*
-function ShowGooglePlace({ place }: { place?: Place | null }) {
+function ShowGooglePlace() {
   const { current: map } = useMap();
-  if (!place?.location) {
-    return null;
-  }
-  map.setView(place.location.toJSON(), map.getZoom(), { animate: true });
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>();
+  const handlePlaceChange: React.ComponentProps<
+    typeof PlacePicker
+  >["onPlaceChange"] = (e) => {
+    // EventTarget type isn't correct so need to do this cast.
+    const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
+    setSelectedPlace(place);
+    if (!place?.location) return;
+    map?.flyTo({ center: place.location.toJSON(), zoom: 14 });
+  };
+  const countries = ["sg"];
+  if (!map) return null;
   return (
-    <Marker
-      position={place.location.toJSON()}
-      icon={PlaceIcon}
-      zIndexOffset={1000}
-    >
-      <Popup>{place?.displayName}</Popup>
-    </Marker>
+    <div>
+      <APILoader
+        apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+        solutionChannel="GMP_GCC_placepicker_v1"
+      />
+      <PlacePicker
+        style={{ width: "50%" }}
+        country={countries}
+        placeholder="Search for a location on the map"
+        onPlaceChange={handlePlaceChange}
+      />
+      {selectedPlace?.location ? (
+        <Marker
+          longitude={selectedPlace.location.lng()}
+          latitude={selectedPlace.location.lat()}
+        ></Marker>
+      ) : null}
+    </div>
   );
 }
-*/
