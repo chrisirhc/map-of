@@ -3,7 +3,12 @@ import "client-only";
 
 import { use, useState, useMemo } from "react";
 
-import MapGL, { useMap, Marker, Source, Layer } from "react-map-gl/maplibre";
+import MapGL, {
+  useMap,
+  Source,
+  Layer,
+  SymbolLayer,
+} from "react-map-gl/maplibre";
 import {
   APILoader,
   PlacePicker,
@@ -20,6 +25,20 @@ import { FeatureCollection } from "geojson";
 const MAP_STYLE = `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`;
 
 type Place = google.maps.places.Place;
+
+const POSTBOX_ICON_ID = "postbox-icon";
+const postBoxSymbolLayer: SymbolLayer = {
+  id: "postbox",
+  source: "postbox",
+  type: "symbol",
+  layout: {
+    "icon-image": POSTBOX_ICON_ID,
+    "icon-size": 0.5,
+    // "text-anchor": "top",
+    // "text-field": ["get", "outletName"],
+    // "text-size": 8,
+  },
+};
 
 export function Map({
   center,
@@ -66,18 +85,9 @@ export function Map({
         style={{ width: "100%", height: 400 }}
         mapStyle={MAP_STYLE}
       >
-        <MapImage name="vehicle-icon" url="/postbox-transparent.png" />
+        <MapImage name={POSTBOX_ICON_ID} url="/postbox-transparent.png" />
         <Source type="geojson" data={geojsonData}>
-          <Layer
-            type="symbol"
-            layout={{
-              "icon-image": "vehicle-icon",
-              "icon-size": 0.5,
-              // "text-anchor": "top",
-              // "text-field": ["get", "outletName"],
-              // "text-size": 8,
-            }}
-          />
+          <Layer {...postBoxSymbolLayer} />
         </Source>
       </MapGL>
     </div>
