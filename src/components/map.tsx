@@ -49,16 +49,7 @@ export function Map({
   data: Promise<FeatureCollection>;
 }) {
   const [selectedFeature, setSelectedFeature] = useState<DataFeature | null>();
-  const handlePlaceChange: React.ComponentProps<
-    typeof PlacePicker
-  >["onPlaceChange"] = (e) => {
-    // EventTarget type isn't correct so need to do this cast.
-    const place = (e.target as React.ComponentRef<typeof PlacePicker>).value;
-    setSelectedPlace(place);
-  };
-  const zoomLevel = !center ? 12 : 16;
   center ??= [1.34, 103.833333];
-  const countries = ["sg"];
   const geojsonData = use(data);
   return (
     <div>
