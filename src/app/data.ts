@@ -25,7 +25,7 @@ export async function getAllData(): Promise<AllData> {
     if (!process.env.DATA_LOCATION) {
       throw new Error("DATA_LOCATION not set");
     }
-    return fetch(process.env.DATA_LOCATION).then(
+    return fetch(process.env.DATA_LOCATION, { cache: "force-cache" }).then(
       async (res) => (await res.json()) as MapData
     );
   })();
