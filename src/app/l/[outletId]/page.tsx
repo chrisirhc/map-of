@@ -68,9 +68,10 @@ export default async function Page({ params: { outletId } }: Props) {
           <br />
           {data?.town_suburb} {data?.city} Singapore {data?.postCode}
         </address>
-        Opening Hours:
-        <br />
-        {data.operatingHours}
+        <details>
+          <summary>Opening Hours</summary>
+          {data.operatingHours}
+        </details>
       </Text>
       <Separator size="4" mb="2" />
       <section>
