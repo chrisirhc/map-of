@@ -16,6 +16,7 @@ import MapGL, {
   Source,
   SymbolLayer,
   useMap,
+  NavigationControl,
 } from "react-map-gl/maplibre";
 
 import { Box, Link } from "@radix-ui/themes";
@@ -70,6 +71,7 @@ export function Map({
         }}
       >
         <GeolocateControl />
+        <NavigationControl />
         <MapImage name={POSTBOX_ICON_ID} url="/postbox-transparent.png" />
         <Source type="geojson" data={geojsonData}>
           <Layer {...postBoxSymbolLayer} />
