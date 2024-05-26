@@ -61,18 +61,20 @@ export default async function Page({ params: { outletId } }: Props) {
           openingHoursSpecification: data.operatingHoursSchema ?? undefined,
         })}
       />
-      <Heading size="3">{data?.outletName}</Heading>
-      <Text size="2">
-        <address>
-          {data?.unitNumber} {data?.buildingName} {data?.streetName}
-          <br />
-          {data?.town_suburb} {data?.city} Singapore {data?.postCode}
-        </address>
-        <details>
-          <summary>Opening Hours</summary>
-          {data.operatingHours}
-        </details>
-      </Text>
+      <div className="place-info">
+        <Heading size="3">{data?.outletName}</Heading>
+        <Text size="2">
+          <address>
+            {data?.unitNumber} {data?.buildingName} {data?.streetName}
+            <br />
+            {data?.town_suburb} {data?.city} Singapore {data?.postCode}
+          </address>
+          <details>
+            <summary>Opening Hours</summary>
+            {data.operatingHours}
+          </details>
+        </Text>
+      </div>
       <Separator size="4" mb="2" />
       <section>
         <ClientOnlyMap center={center} data={geojsonData} />
