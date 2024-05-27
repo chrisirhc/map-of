@@ -39,7 +39,7 @@ export default function RootLayout({
         <Theme>
           <Container>
             <Link weight="bold" color="gray" underline="none" asChild>
-              <NextLink href="/">Map of Post boxes</NextLink>
+              <NextLink href="/">Post boxes in Singapore</NextLink>
             </Link>
             <Separator mb="2" size="4" />
             {children}
