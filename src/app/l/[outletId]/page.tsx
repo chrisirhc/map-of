@@ -9,6 +9,7 @@ import {
 import { ClientOnlyMap } from "@/components/client-only-map";
 import { Heading, Separator, Text } from "@radix-ui/themes";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: {
@@ -38,7 +39,7 @@ export async function generateMetadata({
 
 export default async function Page({ params: { outletId } }: Props) {
   const data = await getData(outletId);
-  if (!data) return null;
+  if (!data) return notFound();
   const center: [number, number] = [data.latitude, data.longitude];
   const geojsonData = getGeoJSONData();
   return (
