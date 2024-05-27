@@ -46,14 +46,16 @@ export default function RootLayout({
             <Separator mt="2" size="4" />
             <footer>
               <Text size="1">
-                Data sourced from{" "}
-                <Link href="https://www.singpost.com/locate-us">
-                  Singapore Post
-                </Link>
-                <br />
-                <Link href="https://github.com/chrisirhc/map-of">
-                  Source is at Github
-                </Link>
+                <Flex gap="1">
+                  Data sourced from
+                  <Link href="https://www.singpost.com/locate-us">
+                    Singapore Post
+                  </Link>
+                  <Separator orientation={"vertical"} />
+                  <Link href="https://github.com/chrisirhc/map-of">
+                    Source code
+                  </Link>
+                </Flex>
               </Text>
             </footer>
           </Container>
