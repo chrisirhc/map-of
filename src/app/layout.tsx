@@ -46,7 +46,7 @@ export default function RootLayout({
             <Separator mt="2" size="4" />
             <footer>
               <Text size="1">
-                Data is sourced from{" "}
+                Data sourced from{" "}
                 <Link href="https://www.singpost.com/locate-us">
                   Singapore Post
                 </Link>
