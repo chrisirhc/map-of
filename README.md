@@ -38,3 +38,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Attribution
 
 Posting box image from https://shop.singpost.com/posting-boxes-of-singapore-collection-white-posting-coin-box-csgpo025.html .
+Favicon from Pin on https://www.svgrepo.com/svg/513450/location-pin?edit=true with https://favicon.io/favicon-converter/
